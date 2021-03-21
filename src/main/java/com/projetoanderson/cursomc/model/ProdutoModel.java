@@ -3,35 +3,41 @@ package com.projetoanderson.cursomc.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.ManyToAny;
 
 @Entity
-public class CategoriaModel implements Serializable {
+public class ProdutoModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	private double preco;
 	
-	@ManyToMany(mappedBy = "categorias")
-	@JsonIgnoreProperties(value = "categorias")
-	private List<ProdutoModel> produtos = new ArrayList<>();
+	@ManyToMany
+	@JoinTable(name = "PROTUDO_CATEGORIA",
+		joinColumns = @JoinColumn(name = "produto_id"),
+		inverseJoinColumns = @JoinColumn(name = "categoria_id")
+	)
+	private List<CategoriaModel> categorias =  new ArrayList<>();
 	
-	public CategoriaModel() {
+	public ProdutoModel() {
 		
 	}
 
-	public CategoriaModel(Integer id, String nome) {
+	public ProdutoModel(Integer id, String nome, double preco) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.preco = preco;
 	}
 
 	public Integer getId() {
@@ -49,13 +55,21 @@ public class CategoriaModel implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public List<ProdutoModel> getProdutos() {
-		return produtos;
+
+	public double getPreco() {
+		return preco;
 	}
 
-	public void setProdutos(List<ProdutoModel> produtos) {
-		this.produtos = produtos;
+	public void setPreco(double preco) {
+		this.preco = preco;
+	}
+
+	public List<CategoriaModel> getCategorias() {
+		return categorias;
+	}
+
+	public void setCategorias(List<CategoriaModel> categorias) {
+		this.categorias = categorias;
 	}
 
 	@Override
@@ -74,7 +88,7 @@ public class CategoriaModel implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CategoriaModel other = (CategoriaModel) obj;
+		ProdutoModel other = (ProdutoModel) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -82,8 +96,7 @@ public class CategoriaModel implements Serializable {
 			return false;
 		return true;
 	}
+	
+	
 
-	
-	
-	
 }
