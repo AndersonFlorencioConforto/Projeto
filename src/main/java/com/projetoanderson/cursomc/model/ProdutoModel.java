@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.ManyToAny;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class ProdutoModel implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -22,6 +24,7 @@ public class ProdutoModel implements Serializable {
 	private String nome;
 	private double preco;
 	
+	@JsonBackReference
 	@ManyToMany
 	@JoinTable(name = "PROTUDO_CATEGORIA",
 		joinColumns = @JoinColumn(name = "produto_id"),
