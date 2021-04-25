@@ -2,7 +2,9 @@ package com.projetoanderson.cursomc.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,8 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-
-import org.hibernate.annotations.ManyToAny;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -32,6 +33,9 @@ public class ProdutoModel implements Serializable {
 	)
 	private List<CategoriaModel> categorias =  new ArrayList<>();
 	
+	@OneToMany(mappedBy = "id.produto")
+	private Set<ItemPedidoModel> itens = new HashSet<>();
+	
 	public ProdutoModel() {
 		
 	}
@@ -41,6 +45,14 @@ public class ProdutoModel implements Serializable {
 		this.id = id;
 		this.nome = nome;
 		this.preco = preco;
+	}
+	
+	public List<PedidoModel> getPedidos(){
+		List<PedidoModel> lista = new ArrayList<>();
+		for (ItemPedidoModel x : itens) {
+			lista.add(x.getPedidoModel());
+		}
+		return lista;
 	}
 
 	public Integer getId() {
@@ -98,6 +110,14 @@ public class ProdutoModel implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public Set<ItemPedidoModel> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedidoModel> itens) {
+		this.itens = itens;
 	}
 	
 	
