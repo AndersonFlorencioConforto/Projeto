@@ -5,10 +5,13 @@ import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ItemPedidoModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@JsonIgnore
 	@EmbeddedId
 	private ItemPedidoPk id = new ItemPedidoPk();
 	
@@ -29,9 +32,12 @@ public class ItemPedidoModel implements Serializable {
 		this.preco = preco;
 	}
 	
+	
+	@JsonIgnore
 	public PedidoModel getPedidoModel() {
 		return id.getPedido();
 	}
+	
 	
 	public ProdutoModel getProdutoModel() {
 		return id.getProduto();
